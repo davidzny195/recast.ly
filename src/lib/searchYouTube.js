@@ -4,21 +4,24 @@ $.ajaxPrefilter(function (settings, _, jqXHR) {
   jqXHR.setRequestHeader('Authorization', API_KEY);
 });
 
-const searchYouTube = (query = '', callback) => {
+// https://app-hrsei-api.herokuapp.com/api/recastly/videos
+
+const searchYouTube = (query = '', successCallback, errorCallback) => {
   // TODO
   $.ajax({
-    url: 'https://www.googleapis.com/youtube/v3/search',
+    url: 'https://app-hrsei-api.herokuapp.com/api/recastly/videos',
     type: 'GET',
     data: {
       key: YOUTUBE_API_KEY,
       q: query,
       videoEmbeddable: true,
       part: 'snippet',
-      type: 'video',
-      maxResults: 10
+      type: 'video'
     },
-    success: console.log('success'),
-    error: callback || function(error) {
+    success: function(data) {
+      successCallback(data);
+    },
+    error: errorCallback || function(error) {
       console.error('Recast.ly: Failed to fetch messages', error);
     }
   });

@@ -5,25 +5,32 @@ import exampleVideoData from '../data/exampleVideoData.js';
 import searchYouTube from '../lib/searchYouTube.js';
 
 const App = () => {
-  const [currentVideo, setVideo] = React.useState(exampleVideoData[0]);
-  const [currentList, setList] = React.useState(exampleVideoData);
+  const [currentList, setList] = React.useState([]);
+  const [currentVideo, setVideo] = React.useState({});
 
   const handleVideoChange = event => {
     let title = event.target.innerText;
-    let video = exampleVideoData.find((data) => data.snippet.title === title);
+    let video = currentList.find((data) => data.snippet.title === title);
     setVideo(video);
-    // setVideo(event.target.value);
   };
 
-  const test = () => {
-    console.log(searchYoutube('hello'));
+
+  const generateYoutubeVideos = (query = 'Hack Reactor') => {
+    searchYouTube(query, (data) => {
+      setList(data);
+      setVideo(data[0]);
+    });
   };
 
+  React.useEffect(() => {
+    generateYoutubeVideos();
+  }, []
+  );
 
   return (
     <div>
       <nav className="navbar">
-        <Search />
+        <Search handleSearch={generateYoutubeVideos} />
       </nav>
       <div className="row">
         <div className="col-md-7">
@@ -32,11 +39,11 @@ const App = () => {
         <div className="col-md-5">
           <VideoList videos={currentList} onSelect={handleVideoChange} />
         </div>
-        <button onClick={test}>Click</button>
       </div>
     </div>
   );
 };
+
 
 // In the ES6 spec, files are "modules" and do not share a top-level scope
 // `var` declarations will only exist globally where explicitly defined

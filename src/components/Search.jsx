@@ -1,9 +1,15 @@
-const Search = () => {
+const Search = ({handleSearch}) => {
+  const [query, setQuery] = React.useState('');
+
+  const handleOnSearch = (event) => {
+    event.preventDefault();
+    handleSearch(query);
+  };
 
   return (
     <div className="search-bar form-inline">
-      <input className="form-control" type="text" />
-      <button className="btn hidden-sm-down">
+      <input className="form-control" type="text" value={query} onChange={e => setQuery(e.target.value)} />
+      <button className="btn hidden-sm-down" onClick={handleOnSearch} >
         <span className="glyphicon glyphicon-search"></span>
       </button>
     </div>
