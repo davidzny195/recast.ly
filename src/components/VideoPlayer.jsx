@@ -1,20 +1,26 @@
 const VideoPlayer = ({ video }) => {
+  const [autoplay, setAutoplay] = React.useState('Off');
+
+  const handleToggle = () => {
+    autoplay === 'Off' ? setAutoplay('On') : setAutoplay('Off');
+  };
 
   if (video.id) {
     return (
       <div className="video-player">
+        <button className="toggle" onClick={handleToggle}>Autoplay {autoplay}</button>
         <div className="embed-responsive embed-responsive-16by9">
-          <iframe className="embed-responsive-item" src={`https://www.youtube.com/embed/${video.id.videoId}`} allowFullScreen></iframe>
+          <iframe className="embed-responsive-item" src={`https://www.youtube.com/embed/${video.id.videoId}${autoplay === 'On' && '?autoplay=1'}`} allow='autoplay' allowFullScreen></iframe>
         </div>
         <div className="video-player-details">
-          <h3>{decodeURI(video.snippet.title)}</h3>
-          <div>{decodeURI(video.snippet.description)}</div>
+          <h3>{video.snippet.title}</h3>
+          <div>{video.snippet.description}</div>
         </div>
       </div>
     );
   }
   return (
-    <div class='video-player'></div>
+    <div className="video-player">Please wait...</div>
   );
 };
 

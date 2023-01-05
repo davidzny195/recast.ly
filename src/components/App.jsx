@@ -17,8 +17,10 @@ const App = () => {
 
   const generateYoutubeVideos = (query = 'Hack Reactor') => {
     searchYouTube(query, (data) => {
-      setList(data);
-      setVideo(data[0]);
+      if (data.length) {
+        setList(data);
+        setVideo(data[0]);
+      }
     });
   };
 
